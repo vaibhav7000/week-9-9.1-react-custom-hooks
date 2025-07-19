@@ -1,5 +1,5 @@
 import { use, useCallback, useEffect, useState } from "react";
-import useProducts, { isUserOnline, useInterval, useMousePosition } from "../customhooks/CustomHooks";
+import useProducts, { isUserOnline, useDebounce, useInterval, useMousePosition } from "../customhooks/CustomHooks";
 
 export default function Count() {
 
@@ -121,5 +121,20 @@ export function AutoIncrement() {
         <div>
             {count}
         </div>
+    )
+}
+
+
+export function SearchBar() {
+    const [inputValue, setInputValue] = useState("");
+    const debounceValue = useDebounce(inputValue, 5000);
+
+    useEffect(function() {
+        console.log("Sending the request to the backend server");
+    }, [debounceValue]);
+
+
+    return (
+        <input placeholder="Enter text" onInput={(event) => setInputValue(event.target.value)}/>
     )
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CountClass from "./Components/class-components";
-import Count, {AutoIncrement, Game, MousePosition, OnlineStore} from "./Components/functional-components";
+import Count, {AutoIncrement, Game, MousePosition, OnlineStore, SearchBar} from "./Components/functional-components";
 
 export default function AppMain() {
     const [hidden, setHidden] = useState(false);
@@ -15,10 +15,21 @@ export default function AppMain() {
     return (
         <>
             {/* <OnlineStore/>
-            <Game/>
-            {showMousePosition ? <MousePosition showMousePosition={showMousePosition} setShowMousePosition={setShowMousePosition}/> : null} */}
+            <div style={{
+                height: "100px"
+            }}>
 
-            {hidden ? null : <AutoIncrement/>}
+            </div>
+            <OnlineStore/> */}
+
+            {/* <Game/> */}
+
+            {/* {showMousePosition ? <MousePosition showMousePosition={showMousePosition} setShowMousePosition={setShowMousePosition}/> : null}  */}
+
+            {/* {hidden ? null : <AutoIncrement/>} */}
+            
+            <SearchBar/>
+
         </>
     )
 }

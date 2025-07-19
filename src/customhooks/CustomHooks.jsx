@@ -8,12 +8,14 @@ export default function useProducts(pollingTime = 4) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
+    pollingTime = pollingTime ? parseInt(pollingTime) : 10; 
+
 
     const getData = useCallback(async function() {
         try {
-            // const response = await fetch("https://fakestoreapi.com/products?limit=5", {
-            //     method: "GET"
-            // })
+            const response = await fetch("https://fakestoreapi.com/products?limit=5", {
+                method: "GET"
+            })
 
             const data = await response.json();
 
@@ -110,6 +112,25 @@ export function useInterval(callback, time = 4) {
             clearInterval(intervalID);
         }
     }, [])
+}
+
+// custom hook that is used for debouncing a given value
+export function useDebounce(inputValue, timer = 500) {
+
+    const [debounceValue, setDebounceValue]= useState(inputValue);
+
+    useEffect(function() {
+        let timeoutId = setTimeout(function() {
+            setDebounceValue(inputValue);
+        }, timer);
+
+        return function() {
+            console.log("clearing interval")
+            clearTimeout(timeoutId);
+        }
+    }, [inputValue]);
+
+    return debounceValue;
 }
 
 // custom-hooks are functions that internally uses react pre-defined hooks (useState, useEffect). Using these makes the main file looks cleaner
