@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CountClass from "./Components/class-components";
-import Count from "./Components/functional-components";
+import Count, {OnlineStore} from "./Components/functional-components";
 
 export default function AppMain() {
     const [hidden, setHidden] = useState(false);
@@ -12,7 +12,7 @@ export default function AppMain() {
     }, []);
     return (
         <>
-            {hidden ? null : <Count/>}
+            <OnlineStore/>
         </>
     )
 }

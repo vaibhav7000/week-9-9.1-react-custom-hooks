@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
+import useProducts from "../customhooks/CustomHooks";
 
 export default function Count() {
 
@@ -40,3 +41,41 @@ export default function Count() {
 }
 
 // Hooks are used to create state-variables ( hook into the react-state ) using "useState" + hook into the life-cylce methods of the react-functional-components using "useEffect"
+
+export function OnlineStore() {
+    const [pollingTime, setPollingTime] = useState(10);
+    const {products, loading, error} = useProducts(pollingTime); // calling custom-hook
+    useEffect(function() {
+        console.log("component mounts");
+
+        return () => {
+            console.log("Component un-mounts");
+        }
+    }, []);
+
+    return (
+        <div>
+            {loading ? <div>Loading ...</div> : error ? <div>Something up with server</div> : products.map(pro => <Product key={pro.id} product={pro}/>)}
+
+            <div>
+                <label htmlFor="polling-time">Enter Refresh Time</label>
+                <input type="number" placeholder="Enter Polling time" id="polling-time" value={pollingTime} onInput={(event) => setPollingTime(event.target.value)} />
+            </div>
+        </div>
+    )
+}
+
+function Product({product}) {
+
+    return (
+        <div>
+            <div>
+                {product.title}
+            </div>
+
+            <div>
+                {product.description}
+            </div>
+        </div>
+    )
+}
