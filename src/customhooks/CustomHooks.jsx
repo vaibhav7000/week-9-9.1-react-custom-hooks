@@ -48,4 +48,68 @@ export default function useProducts(pollingTime = 4) {
     return {products, loading, error}
 }
 
+
+export function isUserOnline() {
+    // window.navigator.onLine returns boolean value that states user is connected with internet
+    const [isOnline, setIsOnline] = useState(window.navigator.onLine);
+
+    const toggleState = useCallback(function() {
+        setIsOnline(value => !value);
+    }, []);
+
+    useEffect(function() {
+        window.addEventListener("online", toggleState);
+        window.addEventListener("offline", toggleState);
+
+        return function() {
+            window.removeEventListener("online", toggleState);
+            window.removeEventListener("offline", toggleState);
+        }
+    }, []);
+
+    return {isOnline};
+}
+
+export function useMousePosition() {
+    const [mousePosition, setMousePosition] = useState({
+        xPosition: 0,
+        yPosition: 0
+    });
+
+    const getMousePosition = useCallback(function(event) {
+        setMousePosition({
+            xPosition: event.pageX,
+            yPosition: event.pageY
+        })
+    }, []);
+
+    useEffect(function() {
+        console.log("mouse position mounts")
+        document.addEventListener("mousemove", getMousePosition);
+
+        return () => {
+            console.log("mouse position unmounts")
+            document.removeEventListener("mousemove", getMousePosition)
+        }
+    }, []);
+
+    return mousePosition;
+}
+
+// custom hook that take callback as input and runs the callback after every n seconds
+export function useInterval(callback, time = 4) {
+
+    useEffect(function() {
+        console.log("auto increment mount")
+        let intervalID = setInterval(callback, time * 1000);
+
+        callback();
+
+        return function() {
+            console.log("auto increment unmount")
+            clearInterval(intervalID);
+        }
+    }, [])
+}
+
 // custom-hooks are functions that internally uses react pre-defined hooks (useState, useEffect). Using these makes the main file looks cleaner

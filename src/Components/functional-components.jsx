@@ -1,5 +1,5 @@
 import { use, useCallback, useEffect, useState } from "react";
-import useProducts from "../customhooks/CustomHooks";
+import useProducts, { isUserOnline, useInterval, useMousePosition } from "../customhooks/CustomHooks";
 
 export default function Count() {
 
@@ -76,6 +76,50 @@ function Product({product}) {
             <div>
                 {product.description}
             </div>
+        </div>
+    )
+}
+
+
+export function Game() {
+    const { isOnline } = isUserOnline();
+
+    return (
+        <div>
+            {isOnline ? "You are connected with internet" : "You are not connected with internet"}
+        </div>
+    )
+}
+
+export function MousePosition({showMousePosition, setShowMousePosition}) {
+    const mousePosition = useMousePosition();
+
+
+    return (
+        <div>
+            {showMousePosition ? <div>
+                {`Mouse position x ${mousePosition.xPosition} Mouse position y ${mousePosition.yPosition}`}
+            </div> : "You disable the position"}
+
+            <button onClick={() => setShowMousePosition(value => !value)}>Toggle</button>
+        </div>
+    )
+}
+
+
+export function AutoIncrement() {
+    const [count, setCount] = useState(0);
+
+    const increment = useCallback(function() {
+        setCount(value => value + 1);
+    }, []);
+
+    useInterval(increment)
+
+
+    return  (
+        <div>
+            {count}
         </div>
     )
 }
